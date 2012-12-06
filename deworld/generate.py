@@ -1,6 +1,6 @@
 # coding: utf-8
-import os
-import shutil
+# import os
+# import shutil
 import math
 
 from PIL import Image
@@ -10,12 +10,12 @@ from deworld.layers import LAYER_TYPE
 from deworld import power_points
 from deworld.map_colors import HeightColorMap, GrayColorMap, RGBColorMap
 
-shutil.rmtree('./results', ignore_errors=True)
+# shutil.rmtree('./results', ignore_errors=True)
 
-os.mkdir('./results')
-os.mkdir('./results/height')
-os.mkdir('./results/temperature')
-os.mkdir('./results/wind')
+# os.mkdir('./results')
+# os.mkdir('./results/height')
+# os.mkdir('./results/temperature')
+# os.mkdir('./results/wind')
 
 
 WIDTH = 100

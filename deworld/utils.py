@@ -1,5 +1,6 @@
 # coding: utf-8
 
+E = 0.00001
 
 def copy2d(original):
     data = [None] * len(original)

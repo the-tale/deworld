@@ -1,9 +1,10 @@
 # coding: utf-8
+import mock
 
 from unittest import TestCase
 
 from deworld.world import World
-
+from deworld.utils import E
 
 class WindLayerTests(TestCase):
 
@@ -15,13 +16,142 @@ class WindLayerTests(TestCase):
         self.world = World(self.W, self.H)
         self.layer = self.world.layer_wind
 
+    def fill_layer_with(self, data, from_x, from_y, to_x, to_y, value):
+        for y in xrange(from_y, to_y+1):
+            for x in xrange(from_x, to_x+1):
+                data[y][x] = value
 
-    # def test_modify_speed_zero(self):
-    #     self.assertEqual(self.layer._modify_speed(speed=0, temp_delta=0, height_delta=0, distance=0, direction=1), 0)
-    #     self.assertEqual(self.layer._modify_speed(speed=0, temp_delta=0, height_delta=0, distance=0, direction=-1), 0)
+    @mock.patch('deworld.layers.WindLayer.BORDER_SPEED', 1.0)
+    def test_get_speeds_border(self):
+        v_speed, h_speed = self.layer._get_speeds(from_x=-1, from_y=0, to_x=0, to_y=0)
+        self.assertTrue(v_speed > 0 and -E < h_speed < E)
 
-    # def test_modify_speed_temp(self):
-    #     self.assertTrue(self.layer._modify_speed(speed=0, temp_delta=10, height_delta=0, distance=0, direction=1) > 0 )
-    #     self.assertTrue(self.layer._modify_speed(speed=0, temp_delta=10, height_delta=0, distance=0, direction=-1) < 0 )
-    #     self.assertTrue(self.layer._modify_speed(speed=0, temp_delta=-10, height_delta=0, distance=0, direction=1) > 0 )
-    #     self.assertTrue(self.layer._modify_speed(speed=0, temp_delta=-10, height_delta=0, distance=0, direction=-1) < 0 )
+        v_speed, h_speed = self.layer._get_speeds(from_x=self.W, from_y=0, to_x=self.W-1, to_y=0)
+        self.assertTrue(v_speed < 0 and -E < h_speed < E)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=0, from_y=-1, to_x=0, to_y=0)
+        self.assertTrue( -E < v_speed < E and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=0, from_y=self.H, to_x=0, to_y=self.H-1)
+        self.assertTrue( -E < v_speed < E and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=-1, from_y=-1, to_x=0, to_y=0)
+        self.assertTrue(v_speed > 0 and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=self.W, from_y=-1, to_x=self.W-1, to_y=0)
+        self.assertTrue(v_speed < 0 and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=-1, from_y=self.H, to_x=0, to_y=self.H-1)
+        self.assertTrue(v_speed > 0 and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=self.W, from_y=self.H, to_x=self.W-1, to_y=self.H-1)
+        self.assertTrue(v_speed < 0 and h_speed < 0)
+
+    def test_get_speed_temperature_to_heigh(self):
+        self.world.layer_temperature.data[5][5] -= 1
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=5, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and -E < h_speed < E)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=5, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and -E < h_speed < E)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=4, to_x=5, to_y=5)
+        self.assertTrue( -E < v_speed < E and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=6, to_x=5, to_y=5)
+        self.assertTrue( -E < v_speed < E and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=4, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=4, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=6, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=6, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and h_speed < 0)
+
+    def test_get_speed_temperature_to_low(self):
+        self.world.layer_temperature.data[5][5] += 1
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=5, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and -E < h_speed < E)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=5, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and -E < h_speed < E)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=4, to_x=5, to_y=5)
+        self.assertTrue( -E < v_speed < E and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=6, to_x=5, to_y=5)
+        self.assertTrue( -E < v_speed < E and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=4, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=4, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=6, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=6, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and h_speed > 0)
+
+    def test_get_speed_height_to_heigh(self):
+        self.world.layer_height.data[5][5] += 1
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=5, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and -E < h_speed < E)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=5, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and -E < h_speed < E)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=4, to_x=5, to_y=5)
+        self.assertTrue( -E < v_speed < E and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=6, to_x=5, to_y=5)
+        self.assertTrue( -E < v_speed < E and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=4, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=4, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=6, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=6, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and h_speed > 0)
+
+
+    def test_get_speed_height_to_low(self):
+        self.world.layer_height.data[5][5] -= 1
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=5, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and -E < h_speed < E)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=5, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and -E < h_speed < E)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=4, to_x=5, to_y=5)
+        self.assertTrue( -E < v_speed < E and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=6, to_x=5, to_y=5)
+        self.assertTrue( -E < v_speed < E and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=4, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=4, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=6, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=6, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and h_speed < 0)
