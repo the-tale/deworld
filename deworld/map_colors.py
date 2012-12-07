@@ -62,7 +62,6 @@ class HeightColorMap(object):
 
     @classmethod
     def get_color(cls, height, discret=True):
-        height = (height - 0.5) / 0.5
 
         if discret:
             if height >= 0:

@@ -8,7 +8,7 @@ from PIL import Image
 from deworld.world import World
 from deworld.layers import LAYER_TYPE
 from deworld import power_points
-from deworld.map_colors import HeightColorMap, GrayColorMap, RGBColorMap
+from deworld.map_colors import HeightColorMap, RGBColorMap
 
 # shutil.rmtree('./results', ignore_errors=True)
 
@@ -30,7 +30,7 @@ world.add_power_point(power_points.CircleAreaPoint(layer_type=LAYER_TYPE.HEIGHT,
                                                    name='circular_point_1',
                                                    x=25,
                                                    y=25,
-                                                   power=75,
+                                                   power=0.75,
                                                    radius=15,
                                                    normalizer=linear_normalizer))
 
@@ -38,7 +38,7 @@ world.add_power_point(power_points.CircleAreaPoint(layer_type=LAYER_TYPE.HEIGHT,
                                                    name='circular_point_2',
                                                    x=35,
                                                    y=45,
-                                                   power=-75,
+                                                   power=-0.75,
                                                    radius=15,
                                                    normalizer=linear_normalizer))
 
@@ -49,7 +49,7 @@ world.add_power_point(power_points.ArrowAreaPoint(layer_type=LAYER_TYPE.HEIGHT,
                                                   name='arrow_point_1',
                                                   x=50,
                                                   y=80,
-                                                  power=100,
+                                                  power=1.0,
                                                   length_normalizer=linear_normalizer,
                                                   width_normalizer=linear_normalizer,
                                                   arrows=[arrow_1, arrow_1.rounded_arrow,
@@ -59,7 +59,7 @@ world.add_power_point(power_points.CircleAreaPoint(layer_type=LAYER_TYPE.TEMPERA
                                                    name='temperature_circle',
                                                    x=WIDTH/2,
                                                    y=HEIGHT/2,
-                                                   power=50,
+                                                   power=0.5,
                                                    radius=int(math.hypot(WIDTH, HEIGHT)/2)+1,
                                                    normalizer=equal_normalizer))
 
@@ -68,7 +68,7 @@ def draw_image(catalog, layer, power_points, colorizer):
     img = Image.new('RGB', (WIDTH, HEIGHT))
 
     data = []
-    for row in layer.get_normalized_data():
+    for row in layer.data:
         for cell in row:
             data.append(colorizer(cell, discret=False).rgb)
 
@@ -79,11 +79,21 @@ def draw_image(catalog, layer, power_points, colorizer):
     img.save('./results/%s/%.3d.png' % (catalog, i))
 
 def wind_colorizer(wind, discret=False):
-    MAX = world.layer_wind.MAX
-    r = 0
-    g = float(wind[0] + MAX) / (2 * MAX)
-    b = float(wind[1] + MAX) / (2 * MAX)
-    # print wind, MAX, (r, g, b)
+    r, g, b = 0.5, 0.5, 0.5
+
+    g += wind[0] * 0.5
+    b += wind[1] * 0.5
+
+    return RGBColorMap.get_color(r=r, g=g, b=b)
+
+def temperature_colorizer(temp, discret=False):
+    r, g, b = 0.5, 0.5, 0.5
+
+    if temp < 0.5:
+        b += temp
+    else:
+        r += (temp - 0.5)
+
     return RGBColorMap.get_color(r=r, g=g, b=b)
 
 
@@ -99,7 +109,7 @@ for i in xrange(100):
     draw_image(catalog='temperature',
                layer=world.layer_temperature,
                power_points=world.power_points,
-               colorizer=GrayColorMap.get_color)
+               colorizer=temperature_colorizer)
 
     draw_image(catalog='wind',
                layer=world.layer_wind,

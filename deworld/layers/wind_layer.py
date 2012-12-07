@@ -9,10 +9,13 @@ from deworld.utils import E
 
 class WindLayer(BaseLayer):
 
-    BORDER_SPEED = 10.0
+    MIN = -1.0
+    MAX = 1.0
+
+    BORDER_SPEED = 0.05
     DELTA = 3
-    TEMPERATURE_SPEED = 1.0 # PER 1 DEGREE
-    HEIGHT_SPEED = 0.5 # PER 1 HEIGHT DELTA
+    TEMPERATURE_SPEED = 5.0/13.0 # PER 100% difference
+    HEIGHT_SPEED = 2.5/13.0 # PER 100% difference
 
     def __init__(self, **kwargs):
         super(WindLayer, self).__init__(default=(0.0, 0.0), **kwargs)
@@ -30,7 +33,7 @@ class WindLayer(BaseLayer):
 
         from_temp = self.world.layer_temperature.data[from_y][from_x]
         to_temp = self.world.layer_temperature.data[to_y][to_x]
-        temp_multiplier = self.TEMPERATURE_SPEED * (from_temp - to_temp)
+        temp_multiplier = self.TEMPERATURE_SPEED * (to_temp - from_temp)
         temp_speed = self._break_speed(angle, temp_multiplier)
 
         from_height = self.world.layer_height.data[from_y][from_x]
@@ -45,6 +48,8 @@ class WindLayer(BaseLayer):
         v_speed = (temp_speed[0] + height_speed[0]) / distance
         h_speed = (temp_speed[1] + height_speed[1]) / distance
 
+        # print v_speed, h_speed
+
         return ( v_speed, h_speed)
 
 
@@ -58,9 +63,9 @@ class WindLayer(BaseLayer):
         v_speed = sum(v_speeds)
         h_speed = sum(h_speeds)
 
-        if v_speed < -self.MAX: v_speed = -self.MAX
+        if v_speed < self.MIN: v_speed = self.MIN
         if v_speed > self.MAX: v_speed = self.MAX
-        if h_speed < -self.MAX: h_speed = -self.MAX
+        if h_speed < self.MIN: h_speed = self.MIN
         if h_speed > self.MAX: h_speed = self.MAX
 
         return v_speed, h_speed

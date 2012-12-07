@@ -47,37 +47,39 @@ class WindLayerTests(TestCase):
         v_speed, h_speed = self.layer._get_speeds(from_x=self.W, from_y=self.H, to_x=self.W-1, to_y=self.H-1)
         self.assertTrue(v_speed < 0 and h_speed < 0)
 
+    @mock.patch('deworld.layers.WindLayer.TEMPERATURE_SPEED', 1.0)
     def test_get_speed_temperature_to_heigh(self):
-        self.world.layer_temperature.data[5][5] -= 1
-
-        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=5, to_x=5, to_y=5)
-        self.assertTrue(v_speed > 0 and -E < h_speed < E)
-
-        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=5, to_x=5, to_y=5)
-        self.assertTrue(v_speed < 0 and -E < h_speed < E)
-
-        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=4, to_x=5, to_y=5)
-        self.assertTrue( -E < v_speed < E and h_speed > 0)
-
-        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=6, to_x=5, to_y=5)
-        self.assertTrue( -E < v_speed < E and h_speed < 0)
-
-        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=4, to_x=5, to_y=5)
-        self.assertTrue(v_speed > 0 and h_speed > 0)
-
-        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=4, to_x=5, to_y=5)
-        self.assertTrue(v_speed < 0 and h_speed > 0)
-
-        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=6, to_x=5, to_y=5)
-        self.assertTrue(v_speed > 0 and h_speed < 0)
-
-        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=6, to_x=5, to_y=5)
-        self.assertTrue(v_speed < 0 and h_speed < 0)
-
-    def test_get_speed_temperature_to_low(self):
         self.world.layer_temperature.data[5][5] += 1
 
         v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=5, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and -E < h_speed < E)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=5, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and -E < h_speed < E)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=4, to_x=5, to_y=5)
+        self.assertTrue( -E < v_speed < E and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=5, from_y=6, to_x=5, to_y=5)
+        self.assertTrue( -E < v_speed < E and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=4, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=4, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and h_speed > 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=6, to_x=5, to_y=5)
+        self.assertTrue(v_speed > 0 and h_speed < 0)
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=6, to_x=5, to_y=5)
+        self.assertTrue(v_speed < 0 and h_speed < 0)
+
+    @mock.patch('deworld.layers.WindLayer.TEMPERATURE_SPEED', 1.0)
+    def test_get_speed_temperature_to_low(self):
+        self.world.layer_temperature.data[5][5] -= 1
+
+        v_speed, h_speed = self.layer._get_speeds(from_x=4, from_y=5, to_x=5, to_y=5)
         self.assertTrue(v_speed < 0 and -E < h_speed < E)
 
         v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=5, to_x=5, to_y=5)
@@ -101,6 +103,7 @@ class WindLayerTests(TestCase):
         v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=6, to_x=5, to_y=5)
         self.assertTrue(v_speed > 0 and h_speed > 0)
 
+    @mock.patch('deworld.layers.WindLayer.HEIGHT_SPEED', 1.0)
     def test_get_speed_height_to_heigh(self):
         self.world.layer_height.data[5][5] += 1
 
@@ -128,7 +131,7 @@ class WindLayerTests(TestCase):
         v_speed, h_speed = self.layer._get_speeds(from_x=6, from_y=6, to_x=5, to_y=5)
         self.assertTrue(v_speed > 0 and h_speed > 0)
 
-
+    @mock.patch('deworld.layers.WindLayer.HEIGHT_SPEED', 1.0)
     def test_get_speed_height_to_low(self):
         self.world.layer_height.data[5][5] -= 1
 
