@@ -24,11 +24,3 @@ class TemperatureLayer(BaseLayer):
                 temperature = power_points * (1 - math.fabs(self.world.layer_height.data[y][x]))
 
                 self.next_data[y][x] = temperature
-
-
-                # if power_points > original_value:
-                #     self.next_data[y][x] = min(original_value + 1, self.MAX)
-                # elif power_points < original_value:
-                #     self.next_data[y][x] = max(original_value - 1, 0)
-
-                # self.power[y][x] = -self.next_data[y][x] # we lost temperature every step

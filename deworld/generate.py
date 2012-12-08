@@ -96,8 +96,14 @@ def temperature_colorizer(temp, discret=False):
 
     return RGBColorMap.get_color(r=r, g=g, b=b)
 
+def atmo_wind_colorizer(point, discret=False):
+    return wind_colorizer(point.wind, discret=discret)
 
-for i in xrange(100):
+def atmo_temperature_colorizer(point, discret=False):
+    return temperature_colorizer(point.temperature, discret=discret)
+
+
+for i in xrange(300):
     print 'do step %d' % i
     world.do_step()
 
@@ -115,3 +121,13 @@ for i in xrange(100):
                layer=world.layer_wind,
                power_points=world.power_points,
                colorizer=wind_colorizer)
+
+    draw_image(catalog='atmo_wind',
+               layer=world.layer_atmosphere,
+               power_points=world.power_points,
+               colorizer=atmo_wind_colorizer)
+
+    draw_image(catalog='atmo_temperature',
+               layer=world.layer_atmosphere,
+               power_points=world.power_points,
+               colorizer=atmo_temperature_colorizer)

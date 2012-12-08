@@ -14,8 +14,8 @@ class WindLayer(BaseLayer):
 
     BORDER_SPEED = 0.05
     DELTA = 3
-    TEMPERATURE_SPEED = 5.0/13.0 # PER 100% difference
-    HEIGHT_SPEED = 2.5/13.0 # PER 100% difference
+    TEMPERATURE_SPEED = 5.0 /13.0 # PER 100% difference
+    HEIGHT_SPEED = 2.5 /13.0 # PER 100% difference
 
     def __init__(self, **kwargs):
         super(WindLayer, self).__init__(default=(0.0, 0.0), **kwargs)
