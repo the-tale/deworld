@@ -7,7 +7,7 @@ from deworld.utils import prepair_to_approximation
 from deworld.layers.base_layer import BaseLayer
 
 
-class AtmospherePoint(collections.namedtuple('AtmospherePointBase', ['wind', 'temperature'])):
+class AtmospherePoint(collections.namedtuple('AtmospherePointBase', ['wind', 'temperature', 'wetness'])):
     pass
 
 
@@ -16,11 +16,12 @@ def points_reduces(accamulator, power_and_point):
 
     return AtmospherePoint(wind=(point.wind[0]*power + accamulator.wind[0],
                                  point.wind[1]*power + accamulator.wind[1]),
-                           temperature=point.temperature*power + accamulator.temperature)
+                           temperature=point.temperature*power + accamulator.temperature,
+                           wetness=point.wetness*power + accamulator.wetness)
 
 
 class AtmosphereLayer(BaseLayer):
-    DEFAULT = AtmospherePoint(wind=(0.0, 0.0), temperature=0.0)
+    DEFAULT = AtmospherePoint(wind=(0.0, 0.0), temperature=0.0, wetness=0.0)
     MAX_WIND_SPEED = 4 # in cells
     DELTA = 3
 
@@ -29,6 +30,9 @@ class AtmosphereLayer(BaseLayer):
 
     TEMP_AK = 0.75
     TEMP_WK = 1 - TEMP_AK
+
+    WET_AK = 0.75
+    WET_WK = 1 - WET_AK
 
     def __init__(self, **kwargs):
         super(AtmosphereLayer, self).__init__(default=self.DEFAULT, **kwargs)
@@ -71,5 +75,6 @@ class AtmosphereLayer(BaseLayer):
                 point = reduce(points_reduces, powers, self.DEFAULT)
                 result = AtmospherePoint(wind=(point.wind[0]*self.WIND_AK+self.world.layer_wind.data[y][x][0]*self.WIND_WK,
                                                point.wind[1]*self.WIND_AK+self.world.layer_wind.data[y][x][1]*self.WIND_WK),
-                                        temperature=point.temperature*self.TEMP_AK+self.world.layer_temperature.data[y][x]*self.TEMP_WK)
+                                        temperature=point.temperature*self.TEMP_AK+self.world.layer_temperature.data[y][x]*self.TEMP_WK,
+                                        wetness=point.wetness*self.WET_AK+self.world.layer_wetness.data[y][x]*self.WET_WK)
                 self.next_data[y][x] = result

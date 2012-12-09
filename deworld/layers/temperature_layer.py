@@ -16,7 +16,6 @@ class TemperatureLayer(BaseLayer):
 
         for y in xrange(0, self.h):
             for x in xrange(0, self.w):
-                # original_value = self.data[y][x]
                 power_points = self.power[y][x]
 
                 power_points = min(self.MAX, max(self.MIN, power_points))

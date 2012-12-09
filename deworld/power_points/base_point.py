@@ -17,6 +17,8 @@ class BasePoint(object):
             self.update_powers(world.layer_height, world)
         elif self.layer_type == LAYER_TYPE.TEMPERATURE:
             self.update_powers(world.layer_temperature, world)
+        elif self.layer_type == LAYER_TYPE.WETNESS:
+            self.update_powers(world.layer_wetness, world)
 
     def update_powers(self, layer, world):
         pass

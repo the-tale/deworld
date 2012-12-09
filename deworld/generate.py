@@ -64,6 +64,15 @@ world.add_power_point(power_points.CircleAreaPoint(layer_type=LAYER_TYPE.TEMPERA
                                                    normalizer=equal_normalizer))
 
 
+world.add_power_point(power_points.CircleAreaPoint(layer_type=LAYER_TYPE.WETNESS,
+                                                   name='wetness_circle',
+                                                   x=WIDTH/2,
+                                                   y=HEIGHT/2,
+                                                   power=0.5,
+                                                   radius=int(math.hypot(WIDTH, HEIGHT)/2)+1,
+                                                   normalizer=equal_normalizer))
+
+
 def draw_image(catalog, layer, power_points, colorizer):
     img = Image.new('RGB', (WIDTH, HEIGHT))
 
@@ -96,11 +105,17 @@ def temperature_colorizer(temp, discret=False):
 
     return RGBColorMap.get_color(r=r, g=g, b=b)
 
+def wetness_colorizer(wetness, discret=False):
+    return RGBColorMap.get_color(r=1.0-wetness, g=1.0-wetness, b=1.0)
+
 def atmo_wind_colorizer(point, discret=False):
     return wind_colorizer(point.wind, discret=discret)
 
 def atmo_temperature_colorizer(point, discret=False):
     return temperature_colorizer(point.temperature, discret=discret)
+
+def atmo_wetness_colorizer(point, discret=False):
+    return wetness_colorizer(point.wetness, discret=discret)
 
 
 for i in xrange(300):
@@ -122,6 +137,12 @@ for i in xrange(300):
                power_points=world.power_points,
                colorizer=wind_colorizer)
 
+    draw_image(catalog='wetness',
+               layer=world.layer_wetness,
+               power_points=world.power_points,
+               colorizer=wetness_colorizer)
+
+
     draw_image(catalog='atmo_wind',
                layer=world.layer_atmosphere,
                power_points=world.power_points,
@@ -131,3 +152,8 @@ for i in xrange(300):
                layer=world.layer_atmosphere,
                power_points=world.power_points,
                colorizer=atmo_temperature_colorizer)
+
+    draw_image(catalog='atmo_wetness',
+               layer=world.layer_atmosphere,
+               power_points=world.power_points,
+               colorizer=atmo_wetness_colorizer)
