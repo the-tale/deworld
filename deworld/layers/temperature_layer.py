@@ -10,7 +10,7 @@ class TemperatureLayer(BaseLayer):
     MAX = 1.0
 
     def __init__(self, **kwargs):
-        super(TemperatureLayer, self).__init__(default=(self.MAX+self.MIN)/2, **kwargs)
+        super(TemperatureLayer, self).__init__(default=(self.MAX+self.MIN)/2, default_power=0.0, **kwargs)
 
     def sync(self):
 
@@ -23,3 +23,5 @@ class TemperatureLayer(BaseLayer):
                 temperature = power_points * (1 - math.fabs(self.world.layer_height.data[y][x]))
 
                 self.next_data[y][x] = temperature
+
+                self.power[y][x] = 0

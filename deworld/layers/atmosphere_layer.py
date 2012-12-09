@@ -5,6 +5,7 @@ import collections
 
 from deworld.utils import prepair_to_approximation
 from deworld.layers.base_layer import BaseLayer
+from deworld.layers.vegetation_layer import VEGETATION_TYPE
 
 
 class AtmospherePoint(collections.namedtuple('AtmospherePointBase', ['wind', 'temperature', 'wetness'])):
@@ -27,6 +28,8 @@ class AtmosphereLayer(BaseLayer):
 
     WIND_AK = 0.95
     WIND_WK = 1 - WIND_AK
+
+    WIND_FOREST_MULTIPLIER = 0.95
 
     TEMP_AK = 0.75
     TEMP_WK = 1 - TEMP_AK
@@ -56,8 +59,6 @@ class AtmosphereLayer(BaseLayer):
                 next_x = x+point.wind[0]*self.MAX_WIND_SPEED
                 next_y = y+point.wind[1]*self.MAX_WIND_SPEED
 
-                # for affected_y in xrange(int(max(0, next_y-self.DELTA)), int(min(self.h, next_y+self.DELTA+1))):
-                #     for affected_x in xrange(int(max(0, next_x-self.DELTA)), int(min(self.w, next_x+self.DELTA+1))):
                 for dx, dy in self.area_deltas:
                     affected_x = int(next_x+dx)
                     affected_y = int(next_y+dy)
@@ -73,8 +74,14 @@ class AtmosphereLayer(BaseLayer):
             for x in xrange(0, self.w):
                 powers = prepair_to_approximation(self.power[y][x], default=self.DEFAULT)
                 point = reduce(points_reduces, powers, self.DEFAULT)
-                result = AtmospherePoint(wind=(point.wind[0]*self.WIND_AK+self.world.layer_wind.data[y][x][0]*self.WIND_WK,
-                                               point.wind[1]*self.WIND_AK+self.world.layer_wind.data[y][x][1]*self.WIND_WK),
+
+                wind_multiplier = 1.0
+
+                if self.world.layer_vegetation.data[y][x] == VEGETATION_TYPE.FOREST:
+                    wind_multiplier *= self.WIND_FOREST_MULTIPLIER
+
+                result = AtmospherePoint(wind=( (point.wind[0]*self.WIND_AK+self.world.layer_wind.data[y][x][0]*self.WIND_WK) * wind_multiplier,
+                                                (point.wind[1]*self.WIND_AK+self.world.layer_wind.data[y][x][1]*self.WIND_WK) * wind_multiplier),
                                         temperature=point.temperature*self.TEMP_AK+self.world.layer_temperature.data[y][x]*self.TEMP_WK,
                                         wetness=point.wetness*self.WET_AK+self.world.layer_wetness.data[y][x]*self.WET_WK)
                 self.next_data[y][x] = result

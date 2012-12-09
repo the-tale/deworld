@@ -5,7 +5,7 @@ from deworld.layers.base_layer import BaseLayer
 
 class WetnessLayer(BaseLayer):
 
-    MIN = 0
+    MIN = 0.0
     MAX = 1.0
 
     STEP = 0.01

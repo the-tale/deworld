@@ -5,6 +5,7 @@ from deworld.layers.height_layer import HeightLayer
 from deworld.layers.temperature_layer import TemperatureLayer
 from deworld.layers.wind_layer import WindLayer
 from deworld.layers.wetness_layer import WetnessLayer
+from deworld.layers.vegetation_layer import VegetationLayer, VEGETATION_TYPE
 from deworld.layers.atmosphere_layer import AtmosphereLayer
 
 
@@ -13,6 +14,7 @@ class LAYER_TYPE:
     TEMPERATURE = 1
     WIND = 2
     WETNESS = 3
-    ATMOSPHERE = 4
+    VEGETATION = 4
+    ATMOSPHERE = 5
 
-__all__ = [LAYER_TYPE, BaseLayer, HeightLayer, TemperatureLayer, WindLayer, WetnessLayer, AtmosphereLayer]
+__all__ = [LAYER_TYPE, BaseLayer, HeightLayer, TemperatureLayer, WindLayer, WetnessLayer, AtmosphereLayer, VegetationLayer, VEGETATION_TYPE]

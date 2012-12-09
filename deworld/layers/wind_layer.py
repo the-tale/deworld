@@ -20,8 +20,6 @@ class WindLayer(BaseLayer):
     def __init__(self, **kwargs):
         super(WindLayer, self).__init__(default=(0.0, 0.0), **kwargs)
 
-    def get_normalized_data(self): return self.data
-
     def _break_speed(self, angle, speed):
         return math.cos(angle)*speed,  math.sin(angle)*speed
 
