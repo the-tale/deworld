@@ -12,13 +12,14 @@ class WindLayer(BaseLayer):
     MIN = -1.0
     MAX = 1.0
 
-    BORDER_SPEED = 0.05
-    DELTA = 3
-    TEMPERATURE_SPEED = 5.0 /13.0 # PER 100% difference
-    HEIGHT_SPEED = 2.5 /13.0 # PER 100% difference
+    BORDER_SPEED = None
+    DELTA = None
+    TEMPERATURE_SPEED = None
+    HEIGHT_SPEED = None
 
     def __init__(self, **kwargs):
         super(WindLayer, self).__init__(default=(0.0, 0.0), **kwargs)
+        self._merge_config(self.config.LAYERS.WIND)
 
     def _break_speed(self, angle, speed):
         return math.cos(angle)*speed,  math.sin(angle)*speed

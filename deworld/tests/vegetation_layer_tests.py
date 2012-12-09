@@ -5,15 +5,14 @@ from unittest import TestCase
 
 from deworld.world import World
 from deworld.layers import VEGETATION_TYPE
+from deworld.configs import BaseConfig
+
 
 class VegetationLayerTests(TestCase):
 
-    W = 100
-    H = 100
-
     def setUp(self):
 
-        self.world = World(self.W, self.H)
+        self.world = World(config=BaseConfig)
         self.layer = self.world.layer_vegetation
 
 
@@ -50,7 +49,7 @@ class VegetationLayerTests(TestCase):
     @mock.patch('deworld.layers.vegetation_layer.VegetationLayer.SPAWN_PROBABILITY', 0.1)
     def test_can_spawn_with_probability(self):
         spawned = False
-        for i in xrange(100):
+        for i in xrange(1000):
             spawned = spawned or self.layer.can_spawn(5, 5, [VEGETATION_TYPE.FOREST])
 
         self.assertTrue(spawned)

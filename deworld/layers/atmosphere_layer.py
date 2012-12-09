@@ -23,22 +23,26 @@ def points_reduces(accamulator, power_and_point):
 
 class AtmosphereLayer(BaseLayer):
     DEFAULT = AtmospherePoint(wind=(0.0, 0.0), temperature=0.0, wetness=0.0)
-    MAX_WIND_SPEED = 4 # in cells
-    DELTA = 3
 
-    WIND_AK = 0.95
-    WIND_WK = 1 - WIND_AK
+    # configs
+    MAX_WIND_SPEED = None
+    DELTA = None
 
-    WIND_FOREST_MULTIPLIER = 0.95
+    WIND_AK = None
+    WIND_WK = None
 
-    TEMP_AK = 0.75
-    TEMP_WK = 1 - TEMP_AK
+    WIND_FOREST_MULTIPLIER = None
 
-    WET_AK = 0.75
-    WET_WK = 1 - WET_AK
+    TEMP_AK = None
+    TEMP_WK = None
+
+    WET_AK = None
+    WET_WK = None
 
     def __init__(self, **kwargs):
         super(AtmosphereLayer, self).__init__(default=self.DEFAULT, **kwargs)
+
+        self._merge_config(self.config.LAYERS.ATMOSPHERE)
 
         self.area_deltas = []
         for y in xrange(-self.DELTA, self.DELTA+1):

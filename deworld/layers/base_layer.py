@@ -5,25 +5,36 @@ from deworld.utils import copy2d
 
 class BaseLayer(object):
 
-    def __init__(self, world, w, h, default=0.0, default_power=None):
+    def __init__(self, world, default=0.0, default_power=None):
 
         if default_power is None:
             default_power = default
 
         self.world = world
-        self.w = w
-        self.h = h
 
         self.base_data = []
-        for y in xrange(0, h):
-            self.base_data.append([default] * w)
+        for y in xrange(0, self.h):
+            self.base_data.append([default] * self.w)
         self.data = copy2d(self.base_data)
         self.next_data = copy2d(self.base_data)
 
         self.power = []
-        for y in xrange(0, h):
-            self.power.append([default_power] * w)
+        for y in xrange(0, self.h):
+            self.power.append([default_power] * self.w)
 
+    @property
+    def w(self): return self.world.w
+
+    @property
+    def h(self): return self.world.h
+
+    @property
+    def config(self): return self.world.config
+
+    def _merge_config(self, config):
+        for arg_name, arg_value in config.__dict__.items():
+            if arg_name.isupper():
+                setattr(self, arg_name, arg_value)
 
     def add_power(self, x, y, power):
         self.power[y][x] += power

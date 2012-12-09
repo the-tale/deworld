@@ -8,13 +8,14 @@ class WetnessLayer(BaseLayer):
     MIN = 0.0
     MAX = 1.0
 
-    STEP = 0.01
-    POWER_PER_HEIGHT = -0.25
-    POWER_PER_TEMPERATURE = -0.15
-    POWER_PER_ATMOSPHERE = 0.5
+    STEP = None
+    POWER_PER_HEIGHT = None
+    POWER_PER_TEMPERATURE = None
+    POWER_PER_ATMOSPHERE = None
 
     def __init__(self, **kwargs):
         super(WetnessLayer, self).__init__(default=0.0, **kwargs)
+        self._merge_config(self.config.LAYERS.WETNESS)
 
     def sync(self):
 

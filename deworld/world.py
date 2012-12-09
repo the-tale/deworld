@@ -6,17 +6,19 @@ class WorldException(Exception): pass
 
 class World(object):
 
-    def __init__(self, w, h):
-        self.w = w
-        self.h = h
+    def __init__(self, config):
+        self.config = config
+        self.w = config.WIDTH
+        self.h = config.HEIGHT
+
         self.power_points = {}
 
-        self.layer_height = layers.HeightLayer(world=self, w=self.w, h=self.h)
-        self.layer_temperature = layers.TemperatureLayer(world=self, w=self.w, h=self.h)
-        self.layer_wind = layers.WindLayer(world=self, w=self.w, h=self.h)
-        self.layer_atmosphere = layers.AtmosphereLayer(world=self, w=self.w, h=self.h)
-        self.layer_wetness = layers.WetnessLayer(world=self, w=self.w, h=self.h)
-        self.layer_vegetation = layers.VegetationLayer(world=self, w=self.w, h=self.h)
+        self.layer_height = layers.HeightLayer(world=self)
+        self.layer_temperature = layers.TemperatureLayer(world=self)
+        self.layer_wind = layers.WindLayer(world=self)
+        self.layer_atmosphere = layers.AtmosphereLayer(world=self)
+        self.layer_wetness = layers.WetnessLayer(world=self)
+        self.layer_vegetation = layers.VegetationLayer(world=self)
 
     def add_power_point(self, power_point):
         if power_point.name in self.power_points:

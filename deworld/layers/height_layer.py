@@ -6,11 +6,13 @@ class HeightLayer(BaseLayer):
 
     MIN = -1.0
     MAX = 1.0
-    STEP = 0.01
+
+    # config
+    STEP = None
 
     def __init__(self, **kwargs):
         super(HeightLayer, self).__init__(default=(self.MAX + self.MIN) / 2, **kwargs)
-
+        self._merge_config(self.config.LAYERS.HEIGHT)
 
     def sync(self):
 

@@ -11,6 +11,7 @@ class TemperatureLayer(BaseLayer):
 
     def __init__(self, **kwargs):
         super(TemperatureLayer, self).__init__(default=(self.MAX+self.MIN)/2, default_power=0.0, **kwargs)
+        self._merge_config(self.config.LAYERS.TEMPERATURE)
 
     def sync(self):
 
