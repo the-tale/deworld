@@ -56,6 +56,9 @@ class AtmosphereLayer(BaseLayer):
 
     @classmethod
     def deserialize(cls, world, data):
+        for row in data['data']:
+            row[:] = [AtmospherePoint(wind=tuple(e[0]), temperature=e[1], wetness=e[2]) for e in row]
+
         return cls(world=world, data=data['data'])
 
     def sync(self):

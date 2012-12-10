@@ -1,7 +1,12 @@
 # coding: utf-8
 
+import collections
+
 from deworld import layers
 from deworld.exceptions import DeworldException
+
+class CellInfo(collections.namedtuple('CellInfoBase', ['height', 'temperature', 'wind', 'wetness', 'vegetation', 'atmo_wind', 'atmo_temperature', 'atmo_wetness'])):
+    pass
 
 class World(object):
 
@@ -38,19 +43,29 @@ class World(object):
         del self.biomes[:]
 
     def add_biom(self, biom):
-        for exists_biom in self.bioms:
-            if exists_biom.id == biom.id:
-                raise DeworldException('biom with id "%d" has already added to world' % biom.id)
+        # for exists_biom in self.biomes:
+        #     if exists_biom.id == biom.id:
+        #         raise DeworldException('biom with id "%r" has already added to world' % biom.id)
         self.biomes.append(biom)
 
+    def _cell_info(self, x, y):
+        return CellInfo(height=self.layer_height.data[y][x],
+                        temperature=self.layer_temperature.data[y][x],
+                        wind=self.layer_wind.data[y][x],
+                        wetness=self.layer_wetness.data[y][x],
+                        vegetation=self.layer_vegetation.data[y][x],
+                        atmo_wind=self.layer_atmosphere.data[y][x].wind,
+                        atmo_temperature=self.layer_atmosphere.data[y][x].temperature,
+                        atmo_wetness=self.layer_atmosphere.data[y][x].wetness)
+
     def _select_biom(self, x, y):
-        for biom in self.bioms:
-            if biom.check(self, x, y):
+        for biom in self.biomes:
+            if biom.check(self._cell_info(x, y)):
                 return biom
 
-        raise DeworldException('can not find biom for coordinates (%d, %d). Last biom in bioms list always MUST accept any cell.' % (x, y))
+        raise DeworldException('can not find biom for coordinates (%d, %d). Last biom in biomes list always MUST accept any cell.' % (x, y))
 
-    def get_biom_map(self):
+    def get_biomes_map(self):
 
         biom_map = []
 

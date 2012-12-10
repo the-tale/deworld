@@ -15,7 +15,7 @@ class ArrowAreaPoint(BasePoint):
 
         @property
         def rounded_arrow(self): return self.__class__(angle=math.pi+self.angle,
-                                                       length=self.length / 10.0,
+                                                       length=self.length / 5.0,
                                                        width=self.width)
 
     def __init__(self, arrows, length_normalizer, width_normalizer, **kwargs):
@@ -57,7 +57,7 @@ class ArrowAreaPoint(BasePoint):
                         vector_angle = 0
                     else:
                         vector_angle = (point_x*arrow_cos+point_y*arrow_sin) / (point_distance * 1)
-                        vector_angle = math.acos(vector_angle)
+                        vector_angle = math.acos(round(vector_angle, 8))
 
                     vector_angle = math.fabs(vector_angle)
 

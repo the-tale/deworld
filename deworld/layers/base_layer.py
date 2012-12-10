@@ -17,6 +17,7 @@ class BaseLayer(object):
         for y in xrange(0, self.h):
             self.base_data.append([default] * self.w)
         self.data = copy2d(self.base_data) if data is None else data
+
         self.next_data = copy2d(self.base_data)
 
         self.power = []
