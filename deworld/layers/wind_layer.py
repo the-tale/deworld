@@ -21,6 +21,13 @@ class WindLayer(BaseLayer):
         super(WindLayer, self).__init__(default=(0.0, 0.0), **kwargs)
         self._merge_config(self.config.LAYERS.WIND)
 
+    def serialize(self):
+        return super(WindLayer, self).serialize()
+
+    @classmethod
+    def deserialize(cls, world, data):
+        return cls(world=world, data=data['data'])
+
     def _break_speed(self, angle, speed):
         return math.cos(angle)*speed,  math.sin(angle)*speed
 

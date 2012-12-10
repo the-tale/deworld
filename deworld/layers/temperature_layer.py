@@ -13,6 +13,13 @@ class TemperatureLayer(BaseLayer):
         super(TemperatureLayer, self).__init__(default=(self.MAX+self.MIN)/2, default_power=0.0, **kwargs)
         self._merge_config(self.config.LAYERS.TEMPERATURE)
 
+    def serialize(self):
+        return super(TemperatureLayer, self).serialize()
+
+    @classmethod
+    def deserialize(cls, world, data):
+        return cls(world=world, data=data['data'])
+
     def sync(self):
 
         for y in xrange(0, self.h):

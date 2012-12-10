@@ -1,11 +1,12 @@
 # coding: utf-8
 
 from deworld.utils import copy2d
+from deworld.exceptions import DeworldException
 
 
 class BaseLayer(object):
 
-    def __init__(self, world, default=0.0, default_power=None):
+    def __init__(self, world, default=0.0, default_power=None, data=None):
 
         if default_power is None:
             default_power = default
@@ -15,12 +16,23 @@ class BaseLayer(object):
         self.base_data = []
         for y in xrange(0, self.h):
             self.base_data.append([default] * self.w)
-        self.data = copy2d(self.base_data)
+        self.data = copy2d(self.base_data) if data is None else data
         self.next_data = copy2d(self.base_data)
 
         self.power = []
         for y in xrange(0, self.h):
             self.power.append([default_power] * self.w)
+
+    def serialize(self):
+        return {'data': self.data}
+
+    @classmethod
+    def deserialize(cls, world, data):
+        raise DeworldException('deserialize method not implemented for layer %r' % cls)
+
+    def __eq__(self, other):
+        return ( self.__class__ is other.__class__ and
+                 self.data == other.data )
 
     @property
     def w(self): return self.world.w
@@ -50,7 +62,6 @@ class BaseLayer(object):
                 self.add_power(x+j, y+i, power)
 
     def sync(self):
-        # power on base of last step data and current power
         pass
 
     def apply(self):

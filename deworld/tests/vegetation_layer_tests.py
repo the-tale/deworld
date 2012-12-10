@@ -10,9 +10,12 @@ from deworld.configs import BaseConfig
 
 class VegetationLayerTests(TestCase):
 
+    W = 100
+    H = 100
+
     def setUp(self):
 
-        self.world = World(config=BaseConfig)
+        self.world = World(w=self.W, h=self.H, config=BaseConfig)
         self.layer = self.world.layer_vegetation
 
 

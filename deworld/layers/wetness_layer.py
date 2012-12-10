@@ -17,6 +17,13 @@ class WetnessLayer(BaseLayer):
         super(WetnessLayer, self).__init__(default=0.0, **kwargs)
         self._merge_config(self.config.LAYERS.WETNESS)
 
+    def serialize(self):
+        return super(WetnessLayer, self).serialize()
+
+    @classmethod
+    def deserialize(cls, world, data):
+        return cls(world=world, data=data['data'])
+
     def sync(self):
 
         for y in xrange(0, self.h):

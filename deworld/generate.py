@@ -18,10 +18,10 @@ from deworld.configs import BaseConfig
 # os.mkdir('./results/temperature')
 # os.mkdir('./results/wind')
 
-WIDTH = BaseConfig.WIDTH
-HEIGHT = BaseConfig.HEIGHT
+WIDTH = 100
+HEIGHT = 100
 
-world = World(config=BaseConfig)
+world = World(w=WIDTH, h=HEIGHT, config=BaseConfig)
 
 linear_normalizer = lambda power, normalized_distance: power*(1-normalized_distance)
 equal_normalizer = lambda power, normalized_distance: power

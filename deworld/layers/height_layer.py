@@ -14,6 +14,13 @@ class HeightLayer(BaseLayer):
         super(HeightLayer, self).__init__(default=(self.MAX + self.MIN) / 2, **kwargs)
         self._merge_config(self.config.LAYERS.HEIGHT)
 
+    def serialize(self):
+        return super(HeightLayer, self).serialize()
+
+    @classmethod
+    def deserialize(cls, world, data):
+        return cls(world=world, data=data['data'])
+
     def sync(self):
 
         for y in xrange(0, self.h):

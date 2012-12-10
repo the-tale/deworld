@@ -9,12 +9,11 @@ from deworld.configs import BaseConfig
 
 class WindLayerTests(TestCase):
 
+    W = 100
+    H = 100
+
     def setUp(self):
-
-        self.W = BaseConfig.WIDTH
-        self.H = BaseConfig.HEIGHT
-
-        self.world = World(config=BaseConfig)
+        self.world = World(w=self.W, h=self.H, config=BaseConfig)
         self.layer = self.world.layer_wind
 
     def fill_layer_with(self, data, from_x, from_y, to_x, to_y, value):

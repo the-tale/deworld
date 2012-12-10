@@ -51,6 +51,13 @@ class AtmosphereLayer(BaseLayer):
                     continue
                 self.area_deltas.append((x, y))
 
+    def serialize(self):
+        return super(AtmosphereLayer, self).serialize()
+
+    @classmethod
+    def deserialize(cls, world, data):
+        return cls(world=world, data=data['data'])
+
     def sync(self):
 
         for y in xrange(0, self.h):

@@ -42,6 +42,13 @@ class VegetationLayer(BaseLayer):
         super(VegetationLayer, self).__init__(default=VEGETATION_TYPE.DESERT, default_power=(0.0, 0.0), **kwargs)
         self._merge_config(self.config.LAYERS.VEGETATION)
 
+    def serialize(self):
+        return super(VegetationLayer, self).serialize()
+
+    @classmethod
+    def deserialize(cls, world, data):
+        return cls(world=world, data=data['data'])
+
     def add_power(self, x, y, power):
         old_power = self.power[y][x]
         self.power[y][x] = (old_power[0] + power[0], old_power[1] + power[1])

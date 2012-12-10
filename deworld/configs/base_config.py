@@ -3,9 +3,6 @@
 
 class BaseConfig:
 
-    WIDTH = 100
-    HEIGHT = 100
-
     class LAYERS:
 
         class ATMOSPHERE:
