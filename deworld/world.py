@@ -1,12 +1,30 @@
 # coding: utf-8
-
+import random
 import collections
 
 from deworld import layers
 from deworld.exceptions import DeworldException
 
+def _randomize_value(value_min, value_max, value, fraction):
+    delta = random.uniform(-fraction, fraction) * (value_max - value_min)
+    return max(value_min, min(value_max, value+delta))
+
 class CellInfo(collections.namedtuple('CellInfoBase', ['height', 'temperature', 'wind', 'wetness', 'vegetation', 'atmo_wind', 'atmo_temperature', 'atmo_wetness'])):
-    pass
+
+    def randomize(self, seed, fraction):
+        state = random.getstate()
+        random.seed(seed)
+
+        new_cell = CellInfo(height=_randomize_value(-1.0, 1.0, self.height, fraction),
+                            temperature=_randomize_value(0.0, 1.0, self.temperature, fraction),
+                            wind=(_randomize_value(-1.0, 1.0, self.wind[0], fraction), _randomize_value(-1.0, 1.0, self.wind[1], fraction)),
+                            wetness=_randomize_value(0.0, 1.0, self.wetness, fraction),
+                            vegetation=self.vegetation,
+                            atmo_wind=(_randomize_value(-1.0, 1.0, self.atmo_wind[0], fraction), _randomize_value(-1.0, 1.0, self.atmo_wind[1], fraction)),
+                            atmo_temperature=_randomize_value(0.0, 1.0, self.atmo_temperature, fraction),
+                            atmo_wetness=_randomize_value(0.0, 1.0, self.atmo_wetness, fraction))
+        random.setstate(state)
+        return new_cell
 
 class World(object):
 
@@ -43,12 +61,9 @@ class World(object):
         del self.biomes[:]
 
     def add_biom(self, biom):
-        # for exists_biom in self.biomes:
-        #     if exists_biom.id == biom.id:
-        #         raise DeworldException('biom with id "%r" has already added to world' % biom.id)
         self.biomes.append(biom)
 
-    def _cell_info(self, x, y):
+    def cell_info(self, x, y):
         return CellInfo(height=self.layer_height.data[y][x],
                         temperature=self.layer_temperature.data[y][x],
                         wind=self.layer_wind.data[y][x],
@@ -60,7 +75,7 @@ class World(object):
 
     def _select_biom(self, x, y):
         for biom in self.biomes:
-            if biom.check(self._cell_info(x, y)):
+            if biom.check(self.cell_info(x, y)):
                 return biom
 
         raise DeworldException('can not find biom for coordinates (%d, %d). Last biom in biomes list always MUST accept any cell.' % (x, y))
