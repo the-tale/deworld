@@ -1,0 +1,7 @@
+
+- install deworld from https://github.com/Tiendil/deworld
+  Do not foget add import path, for example, like in that command:
+
+  export PYTHONPATH=$PYTHONPATH:"<path to deworld>"
+
+- THE END
