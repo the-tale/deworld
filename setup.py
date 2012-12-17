@@ -10,6 +10,6 @@ setuptools.setup(
     url = 'https://github.com/Tiendil/deworld',
     license = 'LICENSE',
     description = "DEveloping WORLD - python world generator",
-    long_description = open('README').read(),
+    long_description = open('README.md').read(),
     include_package_data = True # setuptools-git MUST be installed
 )
