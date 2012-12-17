@@ -1,7 +1,10 @@
 # coding: utf-8
 import os
 
-from PIL import Image
+try:
+    from PIL import Image
+except:
+    pass
 
 from deworld.map_colors import HeightColorMap, RGBColorMap
 from deworld.layers import VEGETATION_TYPE
