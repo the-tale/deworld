@@ -39,5 +39,7 @@ class WetnessLayer(BaseLayer):
                     self.next_data[y][x] = min(original_value + self.STEP, self.MAX)
                 elif power_points < original_value:
                     self.next_data[y][x] = max(original_value - self.STEP, self.MIN)
+                else:
+                    self.next_data[y][x] = original_value
 
                 self.power[y][x] = 0
