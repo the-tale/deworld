@@ -74,11 +74,22 @@ class World(object):
                         atmo_wetness=self.layer_atmosphere.data[y][x].wetness)
 
     def _select_biom(self, x, y):
-        for biom in self.biomes:
-            if biom.check(self.cell_info(x, y)):
-                return biom
+        # for biom in self.biomes:
+        #     if biom.check(self.cell_info(x, y)):
+        #         return biom
 
-        raise DeworldException('can not find biom for coordinates (%d, %d). Last biom in biomes list always MUST accept any cell.' % (x, y))
+        best_points = 0
+        best_biom = None
+
+        for biom in self.biomes:
+            points =  biom.check(self.cell_info(x, y))
+            if best_biom is None or best_points < points:
+                best_points = points
+                best_biom = biom
+
+        return best_biom
+
+        # raise DeworldException('can not find biom for coordinates (%d, %d). Last biom in biomes list always MUST accept any cell.' % (x, y))
 
     def get_biomes_map(self):
 

@@ -9,7 +9,7 @@ class BasePoint(object):
         self.name = name
         self.x = x
         self.y = y
-        self.power = power
+        self.power = power if callable(power) else lambda world, x, y: power
         self._powers = None
         self.default_power = default_power
 

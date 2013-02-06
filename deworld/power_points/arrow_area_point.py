@@ -25,16 +25,12 @@ class ArrowAreaPoint(BasePoint):
         self.width_normalizer = width_normalizer
 
     def update_powers(self, layer, world):
-
         radius = max(arrow.length + arrow.width for arrow in self.arrows)
 
         w = h = 1+radius*2
 
         if self._powers is None:
             self._powers = self._get_powers_rect(w=w, h=h)
-        else:
-            layer.apply_powers(self.x-radius, self.y-radius, self._powers)
-            return
 
         powers = self._powers
 
@@ -43,7 +39,13 @@ class ArrowAreaPoint(BasePoint):
             arrow_cos = math.cos(arrow.angle)
 
             for y in xrange(h):
+
+                if self.y + y - radius < 0 or self.y + y - radius >= world.h: continue
+
                 for x in xrange(w):
+
+                    if self.x + x - radius < 0 or self.x + x - radius >= world.w: continue
+
                     point_x = x - radius
                     point_y = y - radius
                     point_distance = math.hypot(point_y, point_x)
@@ -71,7 +73,7 @@ class ArrowAreaPoint(BasePoint):
 
                     if point_width > arrow.width: continue
 
-                    length_power = self.length_normalizer(self.power, point_length/arrow.length)
+                    length_power = self.length_normalizer(self.power(world, self.x+x-radius, self.y+y-radius), point_length/arrow.length)
                     power = self.width_normalizer(length_power, point_width/arrow.width)
                     powers[y][x] = max(powers[y][x], power)
 
