@@ -20,7 +20,7 @@ class HeightLayer(BaseLayer):
 
     @classmethod
     def deserialize(cls, world, data):
-        return cls(world=world, data=data['data'])
+        return cls(world=world, data=data['data'], power=data.get('power'))
 
     def add_power(self, x, y, power):
         old_power = self.power[y][x]
@@ -33,17 +33,11 @@ class HeightLayer(BaseLayer):
                 original_value = self.data[y][x]
                 power_points = self.power[y][x]
 
-                if x == 12 and y == 11:
-                    print '!', original_value, power_points
-
                 if power_points[1] - power_points[0] > self.E:
                     self.next_data[y][x] = min(original_value + self.STEP, self.MAX)
-                elif power_points[1] - power_points[0] > self.E:
+                elif power_points[0] - power_points[1] > self.E:
                     self.next_data[y][x] = max(original_value - self.STEP, self.MIN)
                 else:
                     self.next_data[y][x] = original_value
 
-                if x == 12 and y == 11:
-                    print 'result', self.next_data[y][x]
-
-                self.power[y][x] = 0
+                self.power[y][x] = power_points

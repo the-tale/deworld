@@ -26,7 +26,7 @@ class WindLayer(BaseLayer):
 
     @classmethod
     def deserialize(cls, world, data):
-        return cls(world=world, data=data['data'])
+        return cls(world=world, data=data['data'], power=data.get('power'))
 
     def _break_speed(self, angle, speed):
         return math.cos(angle)*speed,  math.sin(angle)*speed
@@ -53,8 +53,6 @@ class WindLayer(BaseLayer):
 
         v_speed = (temp_speed[0] + height_speed[0]) / distance
         h_speed = (temp_speed[1] + height_speed[1]) / distance
-
-        # print v_speed, h_speed
 
         return ( v_speed, h_speed)
 

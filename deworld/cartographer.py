@@ -59,6 +59,9 @@ def vegetation_colorizer(vegetation, discret=False):
 
     return RGBColorMap.get_color(r=0.0, g=0.0, b=0.0)
 
+def soil_colorizer(soil, discret=False):
+    return RGBColorMap.get_color(r=0.0, g=soil, b=0.0)
+
 def atmo_wind_colorizer(point, discret=False):
     return wind_colorizer(point.wind, discret=discret)
 
@@ -100,6 +103,12 @@ def draw_world(turn, world, catalog):
                layer=world.layer_vegetation,
                power_points=world.power_points,
                colorizer=vegetation_colorizer)
+
+    draw_image(turn=turn,
+               catalog='%s/%s' % (catalog, 'soil'),
+               layer=world.layer_soil,
+               power_points=world.power_points,
+               colorizer=soil_colorizer)
 
     draw_image(turn=turn,
                catalog='%s/%s' % (catalog, 'atmo_wind'),

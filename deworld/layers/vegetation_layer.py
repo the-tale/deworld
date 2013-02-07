@@ -47,7 +47,7 @@ class VegetationLayer(BaseLayer):
 
     @classmethod
     def deserialize(cls, world, data):
-        return cls(world=world, data=data['data'])
+        return cls(world=world, data=data['data'], power=data.get('power'))
 
     def add_power(self, x, y, power):
         old_power = self.power[y][x]
@@ -59,7 +59,7 @@ class VegetationLayer(BaseLayer):
             if value > border_end:
                 power = 0
             else:
-                power -= float(value - border_start) / (border_end - border_start)
+                power *= 1 - float(value - border_start) / (border_end - border_start)
 
         return power
 
@@ -68,7 +68,7 @@ class VegetationLayer(BaseLayer):
             if value < border_end:
                 power = 0
             else:
-                power -= float(border_start - value) / (border_start - border_end)
+                power *= 1 - float(border_start - value) / (border_start - border_end)
 
         return power
 
@@ -90,6 +90,9 @@ class VegetationLayer(BaseLayer):
 
                 power_grass, power_forest = power_points
 
+                if self.data[y][x] == VEGETATION_TYPE.DESERT:
+                    power_grass = max(power_grass, power_forest)
+                    power_forest = max(power_grass, power_forest)
 
                 height = self.world.layer_height.data[y][x]
                 power_forest = self._border_right_power(power_forest, height, self.HEIGHT_FOREST_BARIER_START, self.HEIGHT_FOREST_BARIER_END)
@@ -103,7 +106,6 @@ class VegetationLayer(BaseLayer):
                 power_forest = self._border_left_power(power_forest, wetness, self.WETNESS_FOREST_BARIER_START, self.WETNESS_FOREST_BARIER_END)
                 power_grass = self._border_left_power(power_grass, wetness, self.WETNESS_GRASS_BARIER_START, self.WETNESS_GRASS_BARIER_END)
 
-
                 if power_forest > power_grass and power_forest > self.FOREST_BORDER and self.can_spawn(x, y, [VEGETATION_TYPE.FOREST]):
                     self.next_data[y][x] = VEGETATION_TYPE.FOREST
                 elif power_grass > self.GRASS_BORDER and self.can_spawn(x, y, [VEGETATION_TYPE.GRASS, VEGETATION_TYPE.FOREST]):
@@ -111,4 +113,4 @@ class VegetationLayer(BaseLayer):
                 else:
                     self.next_data[y][x] = VEGETATION_TYPE.DESERT
 
-                self.power[y][x] = (0.0, 0.0)
+                self.power[y][x] = (power_grass, power_forest)

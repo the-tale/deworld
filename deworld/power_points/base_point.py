@@ -22,6 +22,8 @@ class BasePoint(object):
             self.update_powers(world.layer_wetness, world)
         elif self.layer_type == LAYER_TYPE.VEGETATION:
             self.update_powers(world.layer_vegetation, world)
+        elif self.layer_type == LAYER_TYPE.SOIL:
+            self.update_powers(world.layer_soil, world)
 
     def update_powers(self, layer, world):
         pass

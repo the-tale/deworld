@@ -22,7 +22,7 @@ class WetnessLayer(BaseLayer):
 
     @classmethod
     def deserialize(cls, world, data):
-        return cls(world=world, data=data['data'])
+        return cls(world=world, data=data['data'], power=data.get('power'))
 
     def sync(self):
 
@@ -42,4 +42,4 @@ class WetnessLayer(BaseLayer):
                 else:
                     self.next_data[y][x] = original_value
 
-                self.power[y][x] = 0
+                self.power[y][x] = power_points

@@ -6,26 +6,28 @@ from deworld.exceptions import DeworldException
 
 class BaseLayer(object):
 
-    def __init__(self, world, default=0.0, default_power=None, data=None):
+    def __init__(self, world, default=0.0, default_power=None, data=None, power=None):
 
         if default_power is None:
             default_power = default
 
         self.world = world
 
-        self.base_data = []
+        self.next_data = []
         for y in xrange(0, self.h):
-            self.base_data.append([default] * self.w)
-        self.data = copy2d(self.base_data) if data is None else data
+            self.next_data.append([default] * self.w)
 
-        self.next_data = copy2d(self.base_data)
+        self.data = copy2d(self.next_data) if data is None else data
 
-        self.power = []
+        self.base_power = []
         for y in xrange(0, self.h):
-            self.power.append([default_power] * self.w)
+            self.base_power.append([default_power] * self.w)
+
+        self.power = copy2d(self.base_power) if power is None else power
 
     def serialize(self):
-        return {'data': self.data}
+        return {'data': self.data,
+                'power': self.power}
 
     @classmethod
     def deserialize(cls, world, data):
@@ -61,6 +63,9 @@ class BaseLayer(object):
                 if x+j < 0 or self.w <= x+j : continue
 
                 self.add_power(x+j, y+i, power)
+
+    def reset_powers(self):
+        self.power = copy2d(self.base_power)
 
     def sync(self):
         pass

@@ -18,7 +18,7 @@ class TemperatureLayer(BaseLayer):
 
     @classmethod
     def deserialize(cls, world, data):
-        return cls(world=world, data=data['data'])
+        return cls(world=world, data=data['data'], power=data.get('power'))
 
     def sync(self):
 
@@ -32,4 +32,4 @@ class TemperatureLayer(BaseLayer):
 
                 self.next_data[y][x] = temperature
 
-                self.power[y][x] = 0
+                self.power[y][x] = power_points

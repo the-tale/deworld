@@ -59,7 +59,9 @@ class AtmosphereLayer(BaseLayer):
         for row in data['data']:
             row[:] = [AtmospherePoint(wind=tuple(e[0]), temperature=e[1], wetness=e[2]) for e in row]
 
-        return cls(world=world, data=data['data'])
+        power = data.get('power')
+
+        return cls(world=world, data=data['data'], power=power)
 
     def sync(self):
 
