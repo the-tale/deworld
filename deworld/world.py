@@ -27,6 +27,12 @@ class CellInfo(collections.namedtuple('CellInfoBase', ['height', 'temperature', 
         random.setstate(state)
         return new_cell
 
+    @property
+    def mid_temperature(self): return (self.temperature + self.atmo_temperature) / 2.0
+
+    @property
+    def mid_wetness(self): return (self.wetness + self.atmo_wetness) / 2.0
+
 
 class CellPowerInfo(collections.namedtuple('CellPowerInfoBase', ['height', 'temperature', 'wind', 'wetness', 'vegetation', 'soil'])):
     pass

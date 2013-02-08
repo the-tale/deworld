@@ -6,7 +6,7 @@ class BaseConfig:
     class LAYERS:
 
         class ATMOSPHERE:
-            MAX_WIND_SPEED = 4 # in cells
+            MAX_WIND_SPEED = 3 # in cells
             DELTA = 3
 
             WIND_AK = 0.90
@@ -24,7 +24,10 @@ class BaseConfig:
             STEP = 0.01
 
         class TEMPERATURE:
-            pass
+            HEIGHT_PENALTY = 0.5
+
+            POWER_AK = 0.25
+            POWER_WK = 1 - POWER_AK
 
         class VEGETATION:
             HEIGHT_FOREST_BARIER_START = 0.4

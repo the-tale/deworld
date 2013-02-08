@@ -9,6 +9,10 @@ class TemperatureLayer(BaseLayer):
     MIN = 0
     MAX = 1.0
 
+    HEIGHT_PENALTY = None
+    POWER_AK = None
+    POWER_WK = None
+
     def __init__(self, **kwargs):
         super(TemperatureLayer, self).__init__(default=(self.MAX+self.MIN)/2, default_power=0.0, **kwargs)
         self._merge_config(self.config.LAYERS.TEMPERATURE)
@@ -28,7 +32,9 @@ class TemperatureLayer(BaseLayer):
 
                 power_points = min(self.MAX, max(self.MIN, power_points))
 
-                temperature = power_points * (1 - math.fabs(self.world.layer_height.data[y][x]))
+                temperature = power_points - (math.fabs(self.world.layer_height.data[y][x]) * self.HEIGHT_PENALTY)
+
+                temperature = temperature * self.POWER_WK + self.world.layer_atmosphere.data[y][x].temperature * self.POWER_AK
 
                 self.next_data[y][x] = temperature
 
