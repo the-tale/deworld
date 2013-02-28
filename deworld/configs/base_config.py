@@ -50,6 +50,9 @@ class BaseConfig:
 
             SPAWN_PROBABILITY = 0.01
 
+            CURRENT_GRASS_POWER_BONUS = 0.005
+            CURRENT_FOREST_POWER_BONUS = 0.03
+
         class WETNESS:
             STEP = 0.01
             POWER_PER_HEIGHT = -0.25

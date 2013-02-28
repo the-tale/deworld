@@ -37,6 +37,9 @@ class VegetationLayer(BaseLayer):
 
     SPAWN_PROBABILITY = None
 
+    CURRENT_GRASS_POWER_BONUS = None
+    CURRENT_FOREST_POWER_BONUS = None
+
 
     def __init__(self, **kwargs):
         super(VegetationLayer, self).__init__(default=VEGETATION_TYPE.DESERT, default_power=(0.0, 0.0), **kwargs)
@@ -82,6 +85,18 @@ class VegetationLayer(BaseLayer):
 
         return random.uniform(0, 1) < self.SPAWN_PROBABILITY
 
+    def power_from_current_situation(self, x, y):
+        grass, forest = 0.0, 0.0
+        for y in xrange(y-1, y+1+1):
+            for x in xrange(x-1, x+1+1):
+                if not (0 <= y < self.h and 0 <= x < self.w):
+                    continue
+                if self.data[y][x] == VEGETATION_TYPE.GRASS: grass += self.CURRENT_GRASS_POWER_BONUS
+                elif self.data[y][x] == VEGETATION_TYPE.FOREST: forest += self.CURRENT_FOREST_POWER_BONUS
+
+        return random.uniform(0, grass), random.uniform(0, forest)
+
+
     def sync(self):
 
         for y in xrange(0, self.h):
@@ -105,6 +120,11 @@ class VegetationLayer(BaseLayer):
                 wetness = self.world.layer_wetness.data[y][x]
                 power_forest = self._border_left_power(power_forest, wetness, self.WETNESS_FOREST_BARIER_START, self.WETNESS_FOREST_BARIER_END)
                 power_grass = self._border_left_power(power_grass, wetness, self.WETNESS_GRASS_BARIER_START, self.WETNESS_GRASS_BARIER_END)
+
+                bonus_grass, bonus_forest = self.power_from_current_situation(x, y)
+
+                power_grass += bonus_grass
+                power_forest += bonus_forest
 
                 if power_forest > power_grass and power_forest > self.FOREST_BORDER and self.can_spawn(x, y, [VEGETATION_TYPE.FOREST]):
                     self.next_data[y][x] = VEGETATION_TYPE.FOREST
