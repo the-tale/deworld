@@ -9,6 +9,29 @@ def copy2d(original):
     return data
 
 
+def resize2d(array, new_w, new_h):
+    w = len(array[0])
+    h = len(array)
+
+    result = []
+
+    if w > new_w:
+        result = [row[:new_w] for row in array]
+    elif w < new_w:
+        result = [row + [row[-1]]*(new_w-w) for row in array]
+    else:
+        result = copy2d(array)
+
+    if h > new_h:
+        result = result[:new_h]
+
+    if h < new_h:
+        result = result + [result[-1]]*(new_h-h)
+
+    return result
+
+
+
 def prepair_to_approximation(points, default=None):
     '''
     points = [(distance or power, some value)]

@@ -36,7 +36,6 @@ class SoilLayer(BaseLayer):
         return cls(world=world, data=data['data'], power=data.get('power'))
 
     def sync(self):
-
         for y in xrange(0, self.h):
             for x in xrange(0, self.w):
                 power_points = self.power[y][x]

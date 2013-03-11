@@ -127,6 +127,22 @@ class World(object):
         return biom_map
 
 
+    def resize(self, new_w, new_h):
+        if self.w == new_w and self.h == new_h:
+            return
+
+        self.w = new_w
+        self.h = new_h
+
+        self.layer_height.resize(new_w, new_h)
+        self.layer_temperature.resize(new_w, new_h)
+        self.layer_wind.resize(new_w, new_h)
+        self.layer_wetness.resize(new_w, new_h)
+        self.layer_vegetation.resize(new_w, new_h)
+        self.layer_soil.resize(new_w, new_h)
+        self.layer_atmosphere.resize(new_w, new_h)
+
+
     def do_step(self):
 
         self.layer_height.reset_powers()

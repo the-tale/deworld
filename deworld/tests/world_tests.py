@@ -21,6 +21,16 @@ class WorldTests(TestCase):
     def test_simple_step(self):
         self.world.do_step()
 
+    def test_resize_increase(self):
+        self.world.do_step()
+        self.world.resize(self.world.w+2, self.world.h+3)
+        self.world.do_step()
+
+    def test_resize_decrease(self):
+        self.world.do_step()
+        self.world.resize(self.world.w-2, self.world.h-3)
+        self.world.do_step()
+
     def test_serialization(self):
 
         self.world.layer_height.data[5][5] = 1
@@ -28,7 +38,7 @@ class WorldTests(TestCase):
         self.world.layer_wind.data[5][5] = (3.0, 3.0)
         self.world.layer_atmosphere.data[5][5] = AtmospherePoint(wind=(3.0, 3.0), temperature=-1, wetness=0.3)
         self.world.layer_wetness.data[5][5] = 5
-        self.world.layer_vegetation.data[5][5] = 6
+        self.world.layer_vegetation.data[5][5] = 1
 
         self.assertEqual(self.world, World.deserialize(config=BaseConfig, data=self.world.serialize()))
         self.world.do_step()
