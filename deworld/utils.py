@@ -30,7 +30,18 @@ def resize2d(array, new_w, new_h):
 
     return result
 
+def shift2d(array, dx, dy):
 
+    result = copy2d(array)
+
+    for x in xrange(dx):
+        for row in result:
+            row.insert(0, row.pop())
+
+    for y in xrange(dy):
+        result.insert(0, result.pop())
+
+    return result
 
 def prepair_to_approximation(points, default=None):
     '''

@@ -131,16 +131,21 @@ class World(object):
         if self.w == new_w and self.h == new_h:
             return
 
+        dx = (new_w - self.w) / 2
+        dy = (new_h - self.h) / 2
+
         self.w = new_w
         self.h = new_h
 
-        self.layer_height.resize(new_w, new_h)
-        self.layer_temperature.resize(new_w, new_h)
-        self.layer_wind.resize(new_w, new_h)
-        self.layer_wetness.resize(new_w, new_h)
-        self.layer_vegetation.resize(new_w, new_h)
-        self.layer_soil.resize(new_w, new_h)
-        self.layer_atmosphere.resize(new_w, new_h)
+        self.layer_height.resize(new_w, new_h, dx, dy)
+        self.layer_temperature.resize(new_w, new_h, dx, dy)
+        self.layer_wind.resize(new_w, new_h, dx, dy)
+        self.layer_wetness.resize(new_w, new_h, dx, dy)
+        self.layer_vegetation.resize(new_w, new_h, dx, dy)
+        self.layer_soil.resize(new_w, new_h, dx, dy)
+        self.layer_atmosphere.resize(new_w, new_h, dx, dy)
+
+        return dx, dy
 
 
     def do_step(self):

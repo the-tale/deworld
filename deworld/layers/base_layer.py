@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from deworld.utils import copy2d, resize2d
+from deworld.utils import copy2d, resize2d, shift2d
 from deworld.exceptions import DeworldException
 
 
@@ -25,11 +25,11 @@ class BaseLayer(object):
 
         self.power = copy2d(self.base_power) if power is None else power
 
-    def resize(self, new_w, new_h):
-        self.next_data = resize2d(self.next_data, new_w, new_h)
-        self.data = resize2d(self.data, new_w, new_h)
-        self.base_power = resize2d(self.base_power, new_w, new_h)
-        self.power = resize2d(self.power, new_w, new_h)
+    def resize(self, new_w, new_h, dx, dy):
+        self.next_data = shift2d(resize2d(self.next_data, new_w, new_h), dx=dx, dy=dy)
+        self.data = shift2d(resize2d(self.data, new_w, new_h), dx=dx, dy=dy)
+        self.base_power = shift2d(resize2d(self.base_power, new_w, new_h), dx=dx, dy=dy)
+        self.power = shift2d(resize2d(self.power, new_w, new_h), dx=dx, dy=dy)
 
     def serialize(self):
         return {'data': self.data,

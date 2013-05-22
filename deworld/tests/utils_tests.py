@@ -2,7 +2,7 @@
 
 from unittest import TestCase
 
-from deworld.utils import E, prepair_to_approximation, resize2d
+from deworld.utils import E, prepair_to_approximation, resize2d, shift2d
 
 class UtilsTests(TestCase):
 
@@ -68,3 +68,26 @@ class UtilsTests(TestCase):
                                                  [4, 5, 6],
                                                  [4, 5, 6],
                                                  [4, 5, 6]])
+
+    def test_shift2d(self):
+        array = [[1, 2, 3, 4, 5],
+                 [2, 3, 4, 5, 6],
+                 [3, 4, 5, 6, 7],
+                 [4, 5, 6, 7, 8],
+                 [5, 6, 7, 8, 9],
+                 [6, 7, 8, 9, 0]]
+        self.assertEqual(shift2d(array, dx=3, dy=2), [[7, 8, 9, 5, 6],
+                                                      [8, 9, 0, 6, 7],
+                                                      [3, 4, 5, 1, 2],
+                                                      [4, 5, 6, 2, 3],
+                                                      [5, 6, 7, 3, 4],
+                                                      [6, 7, 8, 4, 5]])
+
+    def test_shift2d_no_shift(self):
+        array = [[1, 2, 3, 4, 5],
+                 [2, 3, 4, 5, 6],
+                 [3, 4, 5, 6, 7],
+                 [4, 5, 6, 7, 8],
+                 [5, 6, 7, 8, 9],
+                 [6, 7, 8, 9, 0]]
+        self.assertEqual(shift2d(array, dx=0, dy=0), array)
