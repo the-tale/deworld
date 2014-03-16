@@ -22,21 +22,40 @@ HEIGHT = 100
 
 world = World(w=WIDTH, h=HEIGHT, config=BaseConfig)
 
+def get_height_power_function(borders, power_percent=1.0):
+
+    def power_function(world, x, y):
+        height = world.layer_height.data[y][x]
+
+        if height < borders[0]: return (0.0, math.fabs(borders[0] - height) * power_percent)
+        if height > borders[1]: return (math.fabs(borders[1] - height) * power_percent, 0.0)
+
+        optimal = (borders[0] + borders[1]) / 2
+
+        if height < optimal: return (0.0, math.fabs(borders[0] - height) / 2 * power_percent)
+        if height > optimal: return (math.fabs(borders[1] - height) / 2 * power_percent, 0.0)
+
+        return (0.0, 0.0)
+
+    return power_function
+
 world.add_power_point(power_points.CircleAreaPoint(layer_type=LAYER_TYPE.HEIGHT,
                                                    name='circular_point_1',
                                                    x=25,
                                                    y=25,
-                                                   power=0.75,
+                                                   power=get_height_power_function(borders=(-0.5, 0.5)),
+                                                   default_power=(0,0),
                                                    radius=15,
-                                                   normalizer=normalizers.linear))
+                                                   normalizer=normalizers.linear_2))
 
 world.add_power_point(power_points.CircleAreaPoint(layer_type=LAYER_TYPE.HEIGHT,
                                                    name='circular_point_2',
                                                    x=35,
                                                    y=45,
-                                                   power=-0.75,
+                                                   power=get_height_power_function(borders=(0.25, 0.75)),
+                                                   default_power=(0,0),
                                                    radius=15,
-                                                   normalizer=normalizers.linear))
+                                                   normalizer=normalizers.linear_2))
 
 arrow_1 = power_points.ArrowAreaPoint.Arrow(angle=-math.pi*5/8, length=60, width=10)
 arrow_2 = power_points.ArrowAreaPoint.Arrow(angle=math.pi*5/8, length=30, width=20)
@@ -45,9 +64,10 @@ world.add_power_point(power_points.ArrowAreaPoint(layer_type=LAYER_TYPE.HEIGHT,
                                                   name='arrow_point_1',
                                                   x=50,
                                                   y=80,
-                                                  power=1.0,
-                                                  length_normalizer=normalizers.linear,
-                                                  width_normalizer=normalizers.linear,
+                                                  power=lambda w,x,y: (1.0, 0),
+                                                  default_power=(0,0),
+                                                  length_normalizer=normalizers.linear_2,
+                                                  width_normalizer=normalizers.linear_2,
                                                   arrows=[arrow_1, arrow_1.rounded_arrow,
                                                           arrow_2, arrow_2.rounded_arrow]))
 
