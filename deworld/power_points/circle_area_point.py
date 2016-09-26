@@ -20,11 +20,11 @@ class CircleAreaPoint(BasePoint):
 
         powers = self._powers
 
-        for y in xrange(h):
+        for y in range(h):
 
             if self.y + y - self.radius < 0 or self.y + y - self.radius >= world.h: continue
 
-            for x in xrange(w):
+            for x in range(w):
 
                 if self.x + x - self.radius < 0 or self.x + x - self.radius >= world.w: continue
 

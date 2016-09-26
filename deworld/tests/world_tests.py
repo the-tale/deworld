@@ -47,14 +47,14 @@ class WorldTests(TestCase):
         cell = self.world.cell_info(5, 5)
         randomized_cell = cell.randomize(1, 0.5)
 
-        for i in xrange(100):
+        for i in range(100):
             self.assertEqual(randomized_cell, cell.randomize(1, 0.5))
 
 
     def test_cell_info_randomize_random_state_restore(self):
         random.seed(1)
 
-        test_list = [random.randint(-100, 100) for i in xrange(100)]
+        test_list = [random.randint(-100, 100) for i in range(100)]
 
         random.seed(1)
 
@@ -62,4 +62,4 @@ class WorldTests(TestCase):
 
         cell.randomize(1, 0.5)
 
-        self.assertEqual(test_list, [random.randint(-100, 100) for i in xrange(100)])
+        self.assertEqual(test_list, [random.randint(-100, 100) for i in range(100)])

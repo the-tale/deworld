@@ -76,8 +76,8 @@ class VegetationLayer(BaseLayer):
         return power
 
     def can_spawn(self, x, y, type_):
-        for y in xrange(y-1, y+1+1):
-            for x in xrange(x-1, x+1+1):
+        for y in range(y-1, y+1+1):
+            for x in range(x-1, x+1+1):
                 if not (0 <= y < self.h and 0 <= x < self.w):
                     continue
                 if self.data[y][x] in type_:
@@ -87,8 +87,8 @@ class VegetationLayer(BaseLayer):
 
     def power_from_current_situation(self, x, y):
         grass, forest = 0.0, 0.0
-        for y in xrange(y-1, y+1+1):
-            for x in xrange(x-1, x+1+1):
+        for y in range(y-1, y+1+1):
+            for x in range(x-1, x+1+1):
                 if not (0 <= y < self.h and 0 <= x < self.w):
                     continue
                 if self.data[y][x] == VEGETATION_TYPE.GRASS: grass += self.CURRENT_GRASS_POWER_BONUS
@@ -99,8 +99,8 @@ class VegetationLayer(BaseLayer):
 
     def sync(self):
 
-        for y in xrange(0, self.h):
-            for x in xrange(0, self.w):
+        for y in range(0, self.h):
+            for x in range(0, self.w):
                 power_points = self.power[y][x]
 
                 power_grass, power_forest = power_points

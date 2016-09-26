@@ -36,8 +36,8 @@ class SoilLayer(BaseLayer):
         return cls(world=world, data=data['data'], power=data.get('power'))
 
     def sync(self):
-        for y in xrange(0, self.h):
-            for x in xrange(0, self.w):
+        for y in range(0, self.h):
+            for x in range(0, self.w):
                 power_points = self.power[y][x]
 
                 power_points += math.fabs(self.OPTIMAL_TEMPERATURE - self.world.layer_temperature.data[y][x]) * self.POWER_PER_TEMPERATURE

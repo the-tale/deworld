@@ -6,6 +6,7 @@ import collections
 from deworld.utils import prepair_to_approximation
 from deworld.layers.base_layer import BaseLayer
 from deworld.layers.vegetation_layer import VEGETATION_TYPE
+from functools import reduce
 
 
 class AtmospherePoint(collections.namedtuple('AtmospherePointBase', ['wind', 'temperature', 'wetness'])):
@@ -45,8 +46,8 @@ class AtmosphereLayer(BaseLayer):
         self._merge_config(self.config.LAYERS.ATMOSPHERE)
 
         self.area_deltas = []
-        for y in xrange(-self.DELTA, self.DELTA+1):
-            for x in xrange(-self.DELTA, self.DELTA+1):
+        for y in range(-self.DELTA, self.DELTA+1):
+            for x in range(-self.DELTA, self.DELTA+1):
                 if math.hypot(y, x) > self.DELTA:
                     continue
                 self.area_deltas.append((x, y))
@@ -65,12 +66,12 @@ class AtmosphereLayer(BaseLayer):
 
     def sync(self):
 
-        for y in xrange(0, self.h):
-            for x in xrange(0, self.w):
+        for y in range(0, self.h):
+            for x in range(0, self.w):
                 self.power[y][x] = []
 
-        for y in xrange(0, self.h):
-            for x in xrange(0, self.w):
+        for y in range(0, self.h):
+            for x in range(0, self.w):
                 point = self.data[y][x]
                 next_x = x+point.wind[0]*self.MAX_WIND_SPEED
                 next_y = y+point.wind[1]*self.MAX_WIND_SPEED
@@ -86,8 +87,8 @@ class AtmosphereLayer(BaseLayer):
                     self.power[affected_y][affected_x].append((dist, point))
 
 
-        for y in xrange(0, self.h):
-            for x in xrange(0, self.w):
+        for y in range(0, self.h):
+            for x in range(0, self.w):
                 powers = prepair_to_approximation(self.power[y][x], default=self.DEFAULT)
                 point = reduce(points_reduces, powers, self.DEFAULT)
 

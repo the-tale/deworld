@@ -116,7 +116,7 @@ world.add_power_point(power_points.CircleAreaPoint(layer_type=LAYER_TYPE.VEGETAT
                                                    normalizer=normalizers.linear_2,
                                                    default_power=(0.0, 0.0)))
 
-for i in xrange(300):
-    print 'do step %d' % i
+for i in range(300):
+    print('do step %d' % i)
     world.do_step()
     draw_world(i, world, catalog='./results')

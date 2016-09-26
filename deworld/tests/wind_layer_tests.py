@@ -17,8 +17,8 @@ class WindLayerTests(TestCase):
         self.layer = self.world.layer_wind
 
     def fill_layer_with(self, data, from_x, from_y, to_x, to_y, value):
-        for y in xrange(from_y, to_y+1):
-            for x in xrange(from_x, to_x+1):
+        for y in range(from_y, to_y+1):
+            for x in range(from_x, to_x+1):
                 data[y][x] = value
 
     @mock.patch('deworld.layers.WindLayer.BORDER_SPEED', 1.0)

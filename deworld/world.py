@@ -118,10 +118,10 @@ class World(object):
 
         biom_map = []
 
-        for y in xrange(self.h):
+        for y in range(self.h):
             row = []
             biom_map.append(row)
-            for x in xrange(self.w):
+            for x in range(self.w):
                 row.append(self._select_biom(x, y))
 
         return biom_map
@@ -131,8 +131,8 @@ class World(object):
         if self.w == new_w and self.h == new_h:
             return
 
-        dx = (new_w - self.w) / 2
-        dy = (new_h - self.h) / 2
+        dx = (new_w - self.w) // 2
+        dy = (new_h - self.h) // 2
 
         self.w = new_w
         self.h = new_h
