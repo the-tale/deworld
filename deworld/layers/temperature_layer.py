@@ -26,8 +26,8 @@ class TemperatureLayer(BaseLayer):
 
     def sync(self):
 
-        for y in xrange(0, self.h):
-            for x in xrange(0, self.w):
+        for y in range(0, self.h):
+            for x in range(0, self.w):
                 power_points = self.power[y][x]
 
                 power_points = min(self.MAX, max(self.MIN, power_points))

@@ -20,8 +20,8 @@ setuptools.setup(
 
         'License :: OSI Approved :: BSD License',
 
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
 
         'Natural Language :: English'],
     keywords=['gamedev', 'procedural content generation', 'game development', 'map', 'map generation', 'terrain', 'terrain generation'],

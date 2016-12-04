@@ -52,7 +52,7 @@ class VegetationLayerTests(TestCase):
     @mock.patch('deworld.layers.vegetation_layer.VegetationLayer.SPAWN_PROBABILITY', 0.1)
     def test_can_spawn_with_probability(self):
         spawned = False
-        for i in xrange(1000):
+        for i in range(1000):
             spawned = spawned or self.layer.can_spawn(5, 5, [VEGETATION_TYPE.FOREST])
 
         self.assertTrue(spawned)

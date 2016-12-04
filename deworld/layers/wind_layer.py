@@ -59,8 +59,8 @@ class WindLayer(BaseLayer):
 
     def _calculate_wind(self, x, y):
         winds = []
-        for _y in xrange(y-self.DELTA, y+self.DELTA+1):
-            for _x in xrange(x-self.DELTA, x+self.DELTA+1):
+        for _y in range(y-self.DELTA, y+self.DELTA+1):
+            for _x in range(x-self.DELTA, x+self.DELTA+1):
                 winds.append(self._get_speeds(_x, _y, x, y))
 
         v_speeds, h_speeds = zip(*winds)
@@ -82,8 +82,8 @@ class WindLayer(BaseLayer):
             return v_speed, h_speed
 
         winds = []
-        for _y in xrange(y-self.DELTA, y+self.DELTA+1):
-            for _x in xrange(x-self.DELTA, x+self.DELTA+1):
+        for _y in range(y-self.DELTA, y+self.DELTA+1):
+            for _x in range(x-self.DELTA, x+self.DELTA+1):
                 if not (0 <= _x < self.w and 0 <= _y < self.h):
                     angle = math.atan2(y-_y, x-_x)
                     speed = self._break_speed(angle, self.BORDER_SPEED)
@@ -108,10 +108,10 @@ class WindLayer(BaseLayer):
 
     def sync(self):
 
-        for y in xrange(0, self.h):
-            for x in xrange(0, self.w):
+        for y in range(0, self.h):
+            for x in range(0, self.w):
                 self.next_data[y][x] = self._calculate_wind(x, y)
 
-        for y in xrange(0, self.h):
-            for x in xrange(0, self.w):
+        for y in range(0, self.h):
+            for x in range(0, self.w):
                 self.next_data[y][x] = self._smooth_wind(x, y)

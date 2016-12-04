@@ -14,13 +14,13 @@ class BaseLayer(object):
         self.world = world
 
         self.next_data = []
-        for y in xrange(0, self.h):
+        for y in range(0, self.h):
             self.next_data.append([default] * self.w)
 
         self.data = copy2d(self.next_data) if data is None else data
 
         self.base_power = []
-        for y in xrange(0, self.h):
+        for y in range(0, self.h):
             self.base_power.append([default_power] * self.w)
 
         self.power = copy2d(self.base_power) if power is None else power

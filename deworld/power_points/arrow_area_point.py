@@ -38,11 +38,11 @@ class ArrowAreaPoint(BasePoint):
             arrow_sin = math.sin(arrow.angle)
             arrow_cos = math.cos(arrow.angle)
 
-            for y in xrange(h):
+            for y in range(h):
 
                 if self.y + y - radius < 0 or self.y + y - radius >= world.h: continue
 
-                for x in xrange(w):
+                for x in range(w):
 
                     if self.x + x - radius < 0 or self.x + x - radius >= world.w: continue
 

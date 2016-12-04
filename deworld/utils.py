@@ -34,11 +34,11 @@ def shift2d(array, dx, dy):
 
     result = copy2d(array)
 
-    for x in xrange(dx):
+    for x in range(dx):
         for row in result:
             row.insert(0, row.pop())
 
-    for y in xrange(dy):
+    for y in range(dy):
         result.insert(0, result.pop())
 
     return result
