@@ -1,7 +1,6 @@
 # coding: utf-8
-import mock
 
-from unittest import TestCase
+from unittest import TestCase, mock
 
 from deworld.world import World
 from deworld.utils import E
