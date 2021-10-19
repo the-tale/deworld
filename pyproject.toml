@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "deworld"
+version = "0.2.2"
+description = "Developing world - python world generator."
+repository = "https://github.com/Tiendil/deworld"
+authors = ["Aliaksei Yaletski (Tiendil) <a.eletsky@gmail.com>"]
+license = "BSD-3"
+classifiers = ["Development Status :: 5 - Production/Stable",
+               "Intended Audience :: Developers",
+               "Topic :: Games/Entertainment",
+               "Topic :: Software Development :: Libraries :: Python Modules",
+               "License :: OSI Approved :: BSD License",
+               "Programming Language :: Python :: 3"]
+keywords = ["gamedev", "procedural content generation", "map generation", "terrain generation"]
+exclude = ["results"]
