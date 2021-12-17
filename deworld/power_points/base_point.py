@@ -25,7 +25,7 @@ class BasePoint(object):
         self.name = name
         self.x = x
         self.y = y
-        self.power = power if isinstance(power, collections.Callable) else lambda world, x, y: power
+        self.power = power if isinstance(power, collections.abc.Callable) else lambda world, x, y: power
         self._powers = None
         self.default_power = default_power
 
