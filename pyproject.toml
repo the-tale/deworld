@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "deworld"
-version = "0.2.2"
+version = "0.2.3"
 description = "Developing world - python world generator."
 repository = "https://github.com/Tiendil/deworld"
 authors = ["Aliaksei Yaletski (Tiendil) <a.eletsky@gmail.com>"]
@@ -13,3 +13,6 @@ classifiers = ["Development Status :: 5 - Production/Stable",
                "Programming Language :: Python :: 3"]
 keywords = ["gamedev", "procedural content generation", "map generation", "terrain generation"]
 exclude = ["results"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
